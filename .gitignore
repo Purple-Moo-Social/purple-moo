@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Node
 node_modules/
 .env
@@ -14,9 +13,7 @@ ios/
 
 # Backend
 dist/
-*.log
-=======
-# Logs
+*.log# Logs
 logs
 *.log
 npm-debug.log*
@@ -152,4 +149,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
->>>>>>> ef1dd911e593385e07d351f00d8e8b2caabb6bea
