@@ -1,0 +1,16 @@
+# Node
+node_modules/
+.env
+
+# Android/iOS
+android/
+ios/
+.expo/
+
+# IDE
+.vscode/
+.idea/
+
+# Backend
+dist/
+*.log
