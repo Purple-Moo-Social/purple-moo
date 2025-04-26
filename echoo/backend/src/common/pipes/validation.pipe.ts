@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import {
   PipeTransform,
   Injectable,
@@ -8,8 +10,8 @@ import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { ValidationError } from 'class-validator';
 
-interface ConstructorType<T = any> {
-  new (...args: any[]): T;
+interface ConstructorType<T = unknown> {
+  new (...args: unknown[]): T;
 }
 
 @Injectable()
@@ -19,13 +21,18 @@ export class ValidationPipe implements PipeTransform {
       return value;
     }
 
+    if (typeof metatype !== 'function' || !metatype.prototype) {
+      throw new BadRequestException(
+        'Invalid metatype provided for validation.',
+      );
+    }
     const object = plainToInstance(metatype, value);
     const errors = await validate(object);
 
     if (errors.length > 0) {
       throw new BadRequestException(this.formatErrors(errors));
     }
-    return value;
+    return object;
   }
 
   private toValidate(metatype: ConstructorType): boolean {
