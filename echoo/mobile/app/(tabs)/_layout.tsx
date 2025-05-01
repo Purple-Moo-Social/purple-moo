@@ -1,26 +1,44 @@
 import { Tabs } from 'expo-router';
-import ProtectedRoute  from '../../components/ProtectedRoute';
-import LogoutButton from '@/components/LogoutButton';
+import { useAuth } from '../context/AuthContext';
+import { Redirect } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function TabsLayout() {
+  const { state } = useAuth();
+
+  if(!state.isAuthenticated) {
+    return <Redirect href={{pathname: '../login' }} />;
+  }
+
   return (
-    <ProtectedRoute>
-      <Tabs>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: '#FFD700',
+          tabBarInactiveTintColor: '#555',
+          tabBarStyle: {
+            backgroundColor: '#000',
+            borderTopColor: '#800020',
+          }
+        }}
+      >
         <Tabs.Screen 
           name="home"
           options={{
             title: 'Home',
-            headerRight: () => <LogoutButton />
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name='home' size={24} color={color} />
+            ),
           }}
         />
         <Tabs.Screen 
           name="profile"
           options={{
             title: 'Profile',
-            headerRight: () => <LogoutButton />
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name='person' size={24} color={color} />
+            ),
           }}
         />
       </Tabs>
-    </ProtectedRoute>
   );
 }

@@ -1,5 +1,37 @@
+import 'expo-dev-client';
 import { Stack } from 'expo-router';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Redirect } from 'expo-router';
+import { ActivityIndicator, View } from 'react-native';
+
+function AuthLayout() {
+  const { state } = useAuth();
+
+  if(state.isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size='large' />
+      </View>
+    );
+  }
+
+  if(!state.isAuthenticated) {
+    return <Redirect href={{ pathname: '../login'}} />;
+  }
+
+  return (
+    <Stack>
+      <Stack.Screen 
+        name='(tabs)'
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name='modal'
+        options={{ presentation: 'modal' }}
+      />
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   return (
@@ -8,17 +40,25 @@ export default function RootLayout() {
         <Stack.Screen 
           name='index'
           options={{
-            title: 'Deuces',
             headerShown: false
           }}
         />
         <Stack.Screen 
-          name='(tabs)'
+          name='login'
           options={{
-            headerShown: false
+            title: 'Login',
+            presentation: 'modal'
+          }}
+        />
+        <Stack.Screen 
+          name='register'
+          options={{
+            title: 'Register',
+            presentation: 'modal'
           }}
         />
       </Stack>
+      <AuthLayout />
     </AuthProvider>
   );
 }
