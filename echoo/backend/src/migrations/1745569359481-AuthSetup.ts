@@ -1,3 +1,4 @@
+//src\migrations\1745569359481-AuthSetup.ts
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class AuthSetup1745569359481 implements MigrationInterface {
